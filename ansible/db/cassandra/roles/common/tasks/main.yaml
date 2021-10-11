@@ -20,12 +20,15 @@
     name: cassandra
     state: stopped
     enabled: yes
+
 - name: add java home
-  lineinfile:
-    dest: "/home/adminuser/.bashrc"
-    line: "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/"
-    owner: adminuser
-    group: adminuser
+  block:
+    - name: adding java to env
+      command: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+    - name: adding to java bashrc
+      lineinfile:
+        dest: "/home/{{ remote_user }}/.bashrc"
+        line: "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/"
 
 # - name: Start and Enable firewalld service
 #   systemd:
@@ -65,4 +68,5 @@
   systemd:
     name: cassandra
     state: started
+    enabled: yes
 # - meta: flush_handlers

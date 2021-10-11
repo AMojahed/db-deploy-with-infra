@@ -5,3 +5,4 @@ seeds: "{{ groups['seed-nodes'] | map('extract', hostvars, ['vm_private_ip']) | 
 #For IP Address configuration in YML
 listen_address: "{{ hostvars[inventory_hostname]['vm_private_ip'] }}"
 rpc_address: "{{ hostvars[inventory_hostname]['vm_private_ip'] }}"
+remote_user: "adminuser"

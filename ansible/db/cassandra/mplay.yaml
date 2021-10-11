@@ -1,13 +1,13 @@
 ---
 - hosts: cluster-nodes
-  remote_user: adminuser
+  remote_user: { { remote_user } }
   # become_method: sudo
   # connection: ssh
   become: yes
   roles:
     - common
 # - hosts: new-nodes
-#   remote_user: adminuser
+#   remote_user: {{ remote_user }}
 #   # become_method: sudo
 #   # connection: ssh
 #   become: yes
