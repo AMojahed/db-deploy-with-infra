@@ -1,0 +1,16 @@
+cluster.name: "{{ cluster_name }}"
+{% if master %}
+node.roles: [ master, data ]
+{% elif not master %}
+node.roles: [ data ]
+{% endif %}
+path.logs: "{{ es_log_dir }}"
+path.data: "{{ es_data_dir }}"
+bootstrap.memory_lock: true
+network.host: "{{ network_host }}"
+cluster.initial_master_nodes:  ["{{ master_ip }}"]
+discovery.zen.minimum_master_nodes: 1
+discovery.seed_hosts: ["{{ seed_hosts }}"]
+path.repo: ["{{ path_repo }}"]
+http.port: 9200
+transport.port: 9300

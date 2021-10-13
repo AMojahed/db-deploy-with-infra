@@ -1,0 +1,15 @@
+es_conf_dir: "/etc/elasticsearch"
+es_log_dir: "/var/log/elasticsearch"
+es_data_dir: "/var/lib/elasticsearch"
+es_pid_dir: "/var/run/elasticsearch"
+default_file: "/etc/default/elasticsearch"
+sysd_config_file: "/etc/systemd/system/elasticsearch.service.d/override.conf"
+path_repo: "/backup"
+es_user: elasticsearch
+es_group: elasticsearch
+cluster_name: MyCluster
+# master: true
+master_ip: '{{ groups[''master-nodes''] | map(''extract'', hostvars, [''vm_private_ip'']) | join(''","'') }}'
+seed_hosts: '{{ groups[''cluster-nodes''] | map(''extract'', hostvars, [''vm_private_ip'']) | join(''","'') }}'
+network_host: "{{ hostvars[inventory_hostname]['vm_private_ip'] }}"
+remote_user: "adminuser"
