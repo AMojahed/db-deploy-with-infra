@@ -1,0 +1,16 @@
+---
+- hosts: NFS
+  roles:
+    - nfs
+
+- hosts: DBC
+  roles:
+    - common
+
+- hosts: DBM
+  roles:
+    - master
+
+- hosts: DBS
+  roles:
+    - slave

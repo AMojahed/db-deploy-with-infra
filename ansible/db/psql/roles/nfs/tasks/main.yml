@@ -1,0 +1,22 @@
+---
+- name: install nfs server
+  apt:
+    name:
+      - nfs-kernel-server
+      - python3-pip
+    update_cache: yes
+
+- name: create nfs directory
+  file:
+    path: "{{ nfs_directory }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: "755"
+
+- name: editing exports file
+  lineinfile:
+    path: "/etc/exports"
+    line: "{{ nfs_directory }}\t{{ hostvars[item]['vm_private_ip'] }}(rw,sync,no_root_squash,no_subtree_check)"
+  with_items: "{{groups['DBC']}}"
+  notify: refresh nfs exports

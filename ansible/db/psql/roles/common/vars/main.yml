@@ -1,0 +1,4 @@
+---
+# vars file for nfs
+nfs_directory: "/postgresql-sme-replica-archive"
+ubuntu_release: "bionic"

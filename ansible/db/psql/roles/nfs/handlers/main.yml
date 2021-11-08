@@ -1,0 +1,7 @@
+---
+# handlers file for nfs
+- name: refresh nfs exports
+  systemd:
+    name: nfs-kernel-server
+    state: restarted
+    enabled: yes

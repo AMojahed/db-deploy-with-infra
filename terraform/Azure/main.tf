@@ -87,10 +87,16 @@ resource "azurerm_linux_virtual_machine" "halandbmvm" {
     storage_account_type = "StandardSSD_LRS"
   }
 
+  # source_image_reference {
+  #   publisher = "OpenLogic"
+  #   offer     = "CentOS"
+  #   sku       = "8_2"
+  #   version   = "latest"
+  # }
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
 }
@@ -147,9 +153,15 @@ resource "azurerm_linux_virtual_machine" "halandbs1vm" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
+  # source_image_reference {
+  #   publisher = "OpenLogic"
+  #   offer     = "CentOS"
+  #   sku       = "8_2"
+  #   version   = "latest"
+  # }
 }
 
 
@@ -205,12 +217,18 @@ resource "azurerm_linux_virtual_machine" "halandbs2vm" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
+  # source_image_reference {
+  #   publisher = "OpenLogic"
+  #   offer     = "CentOS"
+  #   sku       = "8_2"
+  #   version   = "latest"
+  # }
 }
 
-##########################################################
+# ##########################################################
 resource "azurerm_public_ip" "halandbs3vmpubip" {
   name                = "${var.dbs3_vm_name}-pubip"
   location            = var.location
@@ -253,11 +271,16 @@ resource "azurerm_linux_virtual_machine" "halandbs3vm" {
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
-
+  # source_image_reference {
+  #   publisher = "OpenLogic"
+  #   offer     = "CentOS"
+  #   sku       = "8_2"
+  #   version   = "latest"
+  # }
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
 }

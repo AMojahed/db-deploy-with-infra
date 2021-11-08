@@ -1,0 +1,28 @@
+---
+- name: Stop postgres Service
+  systemd:
+    name: postgresql@12-main
+    state: stopped
+
+- name: configureation file
+  template:
+    dest: /etc/postgresql/12/main/postgresql.conf
+    src: ../template/postgres-slave.conf.j2
+    owner: root
+    group: postgres
+    mode: "660"
+  notify: restart_service
+
+- name: removing old data
+  shell: "sudo -u postgres rm -r /var/lib/postgresql/12/main && \
+    sudo -u postgres mkdir /var/lib/postgresql/12/main && \
+    sudo -u postgres chmod 700 /var/lib/postgresql/12/main"
+
+- name: copy conf files and link replica
+  expect:
+    command: "sudo -u postgres pg_basebackup -h {{ MASTERDB_PRIVATE_IP }} -p 5432 -U {{ DB_REPLICA_NAME }} -D /var/lib/postgresql/12/main/ -Fp -Xs -R"
+    responses:
+      (?i)password: "{{ DB_REPLICA_PASS }}" # DB_REPLICA_PASS
+  notify: restart_service
+
+- meta: flush_handlers

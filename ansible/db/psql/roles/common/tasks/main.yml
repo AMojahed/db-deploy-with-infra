@@ -1,0 +1,41 @@
+---
+# tasks file for common
+- name: Adding postgresql repo
+  shell: "echo 'deb http://apt.postgresql.org/pub/repos/apt {{ubuntu_release}}-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+
+- name: Installing Postgresql Keys
+  shell: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
+
+- name: Installing Postgresql and nfs
+  apt:
+    update_cache: yes
+    name:
+      - postgresql-12
+      - nfs-common
+      - python3-pip
+      - python-pip
+
+- name: Install required python packages
+  pip:
+    name:
+      - pexpect
+      - psycopg2-binary
+    state: present
+    executable: /usr/bin/pip
+
+- name: creating psql archive directory
+  file:
+    path: "{{nfs_directory}}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: "755"
+
+- name: mounting nfs folder
+  ansible.posix.mount:
+    src: "{{ hostvars[item]['vm_private_ip'] }}:{{nfs_directory}}"
+    path: "{{nfs_directory}}"
+    opts: rw,sync,hard,intr
+    state: mounted
+    fstype: nfs
+  with_items: "{{groups['NFS']}}"

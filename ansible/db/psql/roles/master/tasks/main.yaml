@@ -1,0 +1,29 @@
+---
+- name: configureation file
+  template:
+    src: ../template/postgres-master.conf.j2
+    dest: /etc/postgresql/12/main/postgresql.conf
+    owner: root
+    group: postgres
+    mode: "660"
+  notify: restart_service
+
+- name: Create replica User for database replication
+  become_user: postgres
+  postgresql_user:
+    name: "{{ DB_REPLICA_NAME }}"
+    password: "{{ DB_REPLICA_PASS }}"
+    role_attr_flags: "REPLICATION"
+    state: present
+
+- name: Add replica user entry in pg_hda.conf file
+  postgresql_pg_hba:
+    dest: /etc/postgresql/12/main/pg_hba.conf
+    contype: host
+    users: "{{ DB_REPLICA_NAME }}"
+    source: "{{ hostvars[item]['vm_private_ip'] }}/8" #change the subnetmask to fit your network
+    databases: replication
+  with_items: "{{groups['DBS']}}"
+  notify: restart_service
+
+- meta: flush_handlers

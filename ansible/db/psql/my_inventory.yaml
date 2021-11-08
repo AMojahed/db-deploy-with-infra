@@ -1,0 +1,42 @@
+---
+all:
+  hosts:
+    # controller:
+    #   ansible_connection: local
+    #   ansible_ssh_host: 172.172.177.11
+    node1:
+      ansible_ssh_host: 52.157.66.167
+      vm_private_ip: 10.0.0.10
+      ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+      # ansible_ssh_private_key_file: /vagrant/.vagrant/machines/node1/virtualbox/private_key
+    node2:
+      ansible_ssh_host: 52.157.66.215
+      vm_private_ip: 10.0.0.11
+      ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+      # ansible_ssh_private_key_file: /vagrant/.vagrant/machines/node2/virtualbox/private_key
+    node3:
+      ansible_ssh_host: 52.157.66.221
+      vm_private_ip: 10.0.0.12
+      ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+      # ansible_ssh_private_key_file: /vagrant/.vagrant/machines/node3/virtualbox/private_key
+    node4:
+      ansible_ssh_host: 52.157.66.160
+      vm_private_ip: 10.0.0.13
+      ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+      # ansible_ssh_private_key_file: /vagrant/.vagrant/machines/node3/virtualbox/private_key
+  children:
+    DBC:
+      hosts:
+        node1:
+        node2:
+        node3:
+    DBS:
+      hosts:
+        node2:
+        node3:
+    DBM:
+      hosts:
+        node1:
+    NFS:
+      hosts:
+        node4:
